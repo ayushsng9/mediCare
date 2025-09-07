@@ -1,0 +1,17 @@
+@import "tailwindcss";
+@import 'react-toastify/dist/ReactToastify.css';
+
+.active hr{
+   display: block;
+  }
+
+ ::-webkit-scrollbar{ 
+  display: none;
+}
+
+@media (max-width:740px){
+  .active p{
+    color: #fff;
+    background-color: #6366f1;
+  }
+}
