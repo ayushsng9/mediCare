@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getDashData } from "../../store/adminSlice";
 import { assets } from "../../assets/assets";
+import { cancelAppointment } from "../../store/adminSlice";
 
 function DashBoard() {
   const { adminToken, dashData } = useSelector((state) => state.admin);
@@ -36,6 +37,12 @@ function DashBoard() {
       dateArray[0] + " " + months[Number(dateArray[1])] + " " + dateArray[2]
     );
   };
+
+   const handleCancelAppointment = (appointmentId) => {
+    if (window.confirm('Are you sure you want to cancel this appointment?')) {
+      dispatch(cancelAppointment(appointmentId))
+    }
+  }
 
   return (
     dashData && (
