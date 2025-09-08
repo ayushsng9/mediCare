@@ -5,6 +5,7 @@ import axios from 'axios'
 import { setAdminToken } from '../store/adminSlice';
 import { setDoctorToken } from '../store/doctorSlice';
 import { toast } from 'react-toastify';
+import {useNavigate} from "react-router-dom"
 
 function Login() {
   
@@ -15,6 +16,7 @@ function Login() {
   const backendUrl = useSelector((state) => state.admin.backendUrl);
 
   const dispatch = useDispatch();
+  const navigate= useNavigate()
 
   const handleSubmit = async(e) => {
       e.preventDefault();
@@ -28,6 +30,7 @@ function Login() {
             toast(data.message);
             localStorage.setItem('adminToken',data.data.token)
             dispatch(setAdminToken(data.data.token));
+            navigate('/admin-dashboard')
           }   
         }
         else
@@ -38,6 +41,7 @@ function Login() {
             toast(data.message);
             localStorage.setItem('doctorToken',data.data.token)
             dispatch(setDoctorToken(data.data.token));
+            navigate('/doctor-dashboard')
           }   
         }
       } catch (error) { 

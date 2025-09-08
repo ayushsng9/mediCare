@@ -20,16 +20,16 @@ const router = createBrowserRouter([
     element:<App/>,
     children:[
       /* Admin Routes */
-      { path: '/login', element: <Login /> },
-      { path: '/admin-dashboard', element: <DashBoard /> },
-      { path: '/all-appointments', element: <AllAppointments /> },
-      { path: '/add-doctor', element: <AddDoctor /> },
-      { path: '/doctor-list', element: <DoctorsList /> },
+      { path: 'login', element: <Login /> },
+      { path: 'admin-dashboard', element: <DashBoard /> },
+      { path: 'all-appointments', element: <AllAppointments /> },
+      { path: 'add-doctor', element: <AddDoctor /> },
+      { path: 'doctor-list', element: <DoctorsList /> },
 
       /* Doctor Routes */
-      { path: '/doctor-dashboard', element: <DoctorDashboard /> },
-      { path: '/doctor-appointments', element: <DoctorAppointment /> },
-      { path: '/doctor-profile', element : <DoctorProfile/> }
+      { path: 'doctor-dashboard', element: <DoctorDashboard /> },
+      { path: 'doctor-appointments', element: <DoctorAppointment /> },
+      { path: 'doctor-profile', element : <DoctorProfile/> }
     ]
   }
 ])
