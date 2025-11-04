@@ -142,7 +142,7 @@ const updateProfile = asyncHandler(async (req, res) => {
 
   if (address) {
     try {
-      updateData.address = JSON.parse(address);
+      updateData.address = address;
     } catch (err) {
       throw new ApiError(400, "Invalid address format (must be JSON)");
     }

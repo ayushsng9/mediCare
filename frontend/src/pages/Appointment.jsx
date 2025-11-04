@@ -128,7 +128,7 @@ function Appointment() {
         }
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Booking failed");
+      toast.error("Booking failed");
       console.error("Error booking appointment:", error.message);
     }
   };
