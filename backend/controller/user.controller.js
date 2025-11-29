@@ -128,7 +128,7 @@ const updateProfile = asyncHandler(async (req, res) => {
   if (error) {
     throw new ApiError(400, error.details[0].message);
   }
-
+  
   const userId = req.user.id;
   const {name, phone, address, dob, gender } = value;
   const imageLocalPath = req.file?.path;
