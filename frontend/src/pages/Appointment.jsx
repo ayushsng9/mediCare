@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import RelatedDoctors from "./RelatedDoctors";
 import { useSelector, useDispatch } from "react-redux";
-import { setDoctors } from "../store/appSlice";
+import { setDoctors ,fetchDoctors } from "../store/appSlice";
 import { assets } from "../assets/assets";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { setDoctors, fetchDoctors } from "../store/appSlice";
 
 
 function Appointment() {
