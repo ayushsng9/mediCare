@@ -6,6 +6,8 @@ import { setDoctors } from "../store/appSlice";
 import { assets } from "../assets/assets";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { setDoctors, fetchDoctors } from "../store/appSlice";
+
 
 function Appointment() {
   const { docId } = useParams();
@@ -57,10 +59,11 @@ function Appointment() {
       let currDate = new Date(today);
       currDate.setDate(today.getDate() + i);
 
+      // Define end time for the day (9:00 PM)
       let endTime = new Date(currDate);
       endTime.setHours(21, 0, 0, 0);
 
-      // Set start time for the day
+      // Set start time: If today, start from next hour; otherwise start at 10 AM
       if (today.getDate() === currDate.getDate()) {
         currDate.setHours(currDate.getHours() > 10 ? currDate.getHours() + 1 : 10);
         currDate.setMinutes(currDate.getMinutes() > 30 ? 30 : 0);
@@ -78,13 +81,15 @@ function Appointment() {
         let month = currDate.getMonth() + 1;
         let year = currDate.getFullYear();
         
-        // Match the key format used in backend: "d_m_y"
+        // Exact key format used in backend
         const slotDate = `${day}_${month}_${year}`;
         const slotTime = formattedTime;
 
-        // Check if this specific slot is booked in the doctor's data
-        const isSlotBooked = docInfo.slotsBooked?.[slotDate]?.includes(slotTime);
+        // CHECK GLOBAL BOOKINGS (docInfo.slotsBooked)
+        // We use optional chaining (?.) because slotsBooked might be undefined for new doctors
+        const isSlotBooked = docInfo.slotsBooked?.[slotDate] && docInfo.slotsBooked[slotDate].includes(slotTime);
 
+        // Only add slot if it is NOT booked
         if (!isSlotBooked) {
           timeSlots.push({
             dateTime: new Date(currDate),
@@ -92,7 +97,7 @@ function Appointment() {
           });
         }
 
-        // Increment by 30 minutes
+        // Increment time by 30 minutes
         currDate.setMinutes(currDate.getMinutes() + 30);
       }
 
@@ -149,6 +154,10 @@ function Appointment() {
   useEffect(() => {
     getAvailableSlots();
   }, [docInfo, userAppointments]);
+
+  useEffect(() => {
+  dispatch(fetchDoctors());
+}, [dispatch, docId]);
 
   return (
     docInfo && (
