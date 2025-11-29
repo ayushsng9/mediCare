@@ -45,24 +45,22 @@ function Appointment() {
   };
 
   // Generate available slots, skipping already booked ones
+  
+  // Generate available slots, checking doctor's global availability
   const getAvailableSlots = () => {
     if (!docInfo) return;
 
     setDocSlots([]);
     const today = new Date();
 
-    // Get booked slots for this doctor
-    const bookedSlots = userAppointments
-      .filter((appt) => appt.docId === docInfo._id)
-      .map((appt) => new Date(appt.slot).getTime());
-
     for (let i = 0; i < 7; i++) {
-      const currDate = new Date(today);
+      let currDate = new Date(today);
       currDate.setDate(today.getDate() + i);
 
       let endTime = new Date(currDate);
       endTime.setHours(21, 0, 0, 0);
 
+      // Set start time for the day
       if (today.getDate() === currDate.getDate()) {
         currDate.setHours(currDate.getHours() > 10 ? currDate.getHours() + 1 : 10);
         currDate.setMinutes(currDate.getMinutes() > 30 ? 30 : 0);
@@ -72,22 +70,33 @@ function Appointment() {
       }
 
       let timeSlots = [];
+      
       while (currDate < endTime) {
-        const formatTime = currDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+        let formattedTime = currDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+        
+        let day = currDate.getDate();
+        let month = currDate.getMonth() + 1;
+        let year = currDate.getFullYear();
+        
+        // Match the key format used in backend: "d_m_y"
+        const slotDate = `${day}_${month}_${year}`;
+        const slotTime = formattedTime;
 
-        if (!bookedSlots.includes(currDate.getTime())) {
+        // Check if this specific slot is booked in the doctor's data
+        const isSlotBooked = docInfo.slotsBooked?.[slotDate]?.includes(slotTime);
+
+        if (!isSlotBooked) {
           timeSlots.push({
             dateTime: new Date(currDate),
-            time: formatTime,
+            time: formattedTime,
           });
         }
 
+        // Increment by 30 minutes
         currDate.setMinutes(currDate.getMinutes() + 30);
       }
 
-      if (timeSlots.length) {
-        setDocSlots((prev) => [...prev, timeSlots]);
-      }
+      setDocSlots((prev) => [...prev, timeSlots]);
     }
   };
 
